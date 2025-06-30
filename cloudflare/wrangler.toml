@@ -1,0 +1,36 @@
+name = "exchange-rate-crawler"
+main = "main.py"
+compatibility_date = "2024-03-18"
+compatibility_flags = ["python_workers"]
+
+# 定时任务配置 - 每4分钟执行一次
+[triggers]
+crons = ["*/4 * * * *"]  # 每4分钟采集一次汇率数据
+
+# KV 存储绑定 - 存储最新汇率数据
+[[kv_namespaces]]
+binding = "EXCHANGE_RATE_KV"
+id = "your-kv-namespace-id"
+preview_id = "your-preview-kv-namespace-id"
+
+# R2 存储绑定 - 存储历史汇率数据
+[[r2_buckets]]
+binding = "EXCHANGE_RATE_BUCKET"
+bucket_name = "exchange-rates"
+preview_bucket_name = "exchange-rates-preview"
+
+# 环境变量
+[vars]
+ENVIRONMENT = "production"
+
+# 开发环境配置
+[env.dev]
+name = "exchange-rate-crawler-dev"
+[env.dev.vars]
+ENVIRONMENT = "development"
+
+# 生产环境配置
+[env.production]
+name = "exchange-rate-crawler-prod"
+[env.production.vars]
+ENVIRONMENT = "production" 

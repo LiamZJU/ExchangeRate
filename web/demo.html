@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>汇率监控界面演示</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部标题 -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">
+                    <span class="icon">💱</span>
+                    实时汇率监控
+                    <span style="font-size: 0.6em; background: rgba(255,255,255,0.2); padding: 0.2em 0.5em; border-radius: 0.3em; margin-left: 0.5em;">演示</span>
+                </h1>
+                <div class="subtitle">8家银行汇率数据实时更新</div>
+            </div>
+            <div class="header-info">
+                <div class="update-info">
+                    <span class="update-label">最后更新：</span>
+                    <span class="update-time">2024-12-25 14:30:25</span>
+                </div>
+                <button class="refresh-btn" onclick="showRefreshDemo()">
+                    <span class="refresh-icon">🔄</span>
+                    刷新
+                </button>
+            </div>
+        </header>
+
+        <!-- 统计信息 -->
+        <div class="stats-section">
+            <div class="stat-card">
+                <div class="stat-value">8</div>
+                <div class="stat-label">支持银行</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">8</div>
+                <div class="stat-label">成功采集</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">100.0%</div>
+                <div class="stat-label">成功率</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="demoCountdown">3:45</div>
+                <div class="stat-label">下次更新</div>
+            </div>
+        </div>
+
+        <!-- 汇率数据展示 -->
+        <div class="rates-section">
+            <!-- 货币筛选 -->
+            <div class="currency-filter">
+                <label for="currencySelect">选择货币：</label>
+                <select id="currencySelect" class="currency-select" onchange="filterCurrency()">
+                    <option value="all">全部货币</option>
+                    <option value="USD">美元 (USD)</option>
+                    <option value="EUR">欧元 (EUR)</option>
+                    <option value="JPY">日元 (JPY)</option>
+                    <option value="GBP">英镑 (GBP)</option>
+                    <option value="HKD">港元 (HKD)</option>
+                </select>
+            </div>
+
+            <!-- 银行汇率卡片 -->
+            <div class="banks-grid">
+                <!-- 招商银行 -->
+                <div class="bank-card">
+                    <div class="bank-header">
+                        <div class="bank-name">招商银行</div>
+                        <div class="bank-status">
+                            <div class="status-indicator"></div>
+                            <span>数据正常</span>
+                        </div>
+                    </div>
+                    <div class="bank-body">
+                        <table class="rates-table">
+                            <thead>
+                                <tr>
+                                    <th>货币</th>
+                                    <th>买入价</th>
+                                    <th>卖出价</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="currency-name">美元</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">USD</div>
+                                    </td>
+                                    <td><span class="rate-value buy">7.2345</span></td>
+                                    <td><span class="rate-value sell">7.2567</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="currency-name">欧元</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">EUR</div>
+                                    </td>
+                                    <td><span class="rate-value buy">7.8432</span></td>
+                                    <td><span class="rate-value sell">7.8876</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="currency-name">日元</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">JPY</div>
+                                    </td>
+                                    <td><span class="rate-value buy">0.0482</span></td>
+                                    <td><span class="rate-value sell">0.0489</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="currency-name">英镑</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">GBP</div>
+                                    </td>
+                                    <td><span class="rate-value buy">9.1234</span></td>
+                                    <td><span class="rate-value sell">9.1987</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="currency-name">港元</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">HKD</div>
+                                    </td>
+                                    <td><span class="rate-value buy">0.9234</span></td>
+                                    <td><span class="rate-value sell">0.9278</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 工商银行 -->
+                <div class="bank-card">
+                    <div class="bank-header">
+                        <div class="bank-name">工商银行</div>
+                        <div class="bank-status">
+                            <div class="status-indicator"></div>
+                            <span>数据正常</span>
+                        </div>
+                    </div>
+                    <div class="bank-body">
+                        <table class="rates-table">
+                            <thead>
+                                <tr>
+                                    <th>货币</th>
+                                    <th>买入价</th>
+                                    <th>卖出价</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="currency-name">美元</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">USD</div>
+                                    </td>
+                                    <td><span class="rate-value buy">7.2356</span></td>
+                                    <td><span class="rate-value sell">7.2578</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="currency-name">欧元</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">EUR</div>
+                                    </td>
+                                    <td><span class="rate-value buy">7.8445</span></td>
+                                    <td><span class="rate-value sell">7.8889</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="currency-name">日元</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">JPY</div>
+                                    </td>
+                                    <td><span class="rate-value buy">0.0483</span></td>
+                                    <td><span class="rate-value sell">0.0490</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 农业银行 -->
+                <div class="bank-card">
+                    <div class="bank-header">
+                        <div class="bank-name">农业银行</div>
+                        <div class="bank-status">
+                            <div class="status-indicator"></div>
+                            <span>数据正常</span>
+                        </div>
+                    </div>
+                    <div class="bank-body">
+                        <table class="rates-table">
+                            <thead>
+                                <tr>
+                                    <th>货币</th>
+                                    <th>买入价</th>
+                                    <th>卖出价</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="currency-name">美元</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">USD</div>
+                                    </td>
+                                    <td><span class="rate-value buy">7.2340</span></td>
+                                    <td><span class="rate-value sell">7.2560</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="currency-name">英镑</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">GBP</div>
+                                    </td>
+                                    <td><span class="rate-value buy">9.1245</span></td>
+                                    <td><span class="rate-value sell">9.1998</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 中国建设银行 -->
+                <div class="bank-card">
+                    <div class="bank-header">
+                        <div class="bank-name">中国建设银行</div>
+                        <div class="bank-status">
+                            <div class="status-indicator"></div>
+                            <span>数据正常</span>
+                        </div>
+                    </div>
+                    <div class="bank-body">
+                        <table class="rates-table">
+                            <thead>
+                                <tr>
+                                    <th>货币</th>
+                                    <th>买入价</th>
+                                    <th>卖出价</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="currency-name">美元</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">USD</div>
+                                    </td>
+                                    <td><span class="rate-value buy">7.2350</span></td>
+                                    <td><span class="rate-value sell">7.2570</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="currency-name">港元</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">HKD</div>
+                                    </td>
+                                    <td><span class="rate-value buy">0.9230</span></td>
+                                    <td><span class="rate-value sell">0.9275</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 交通银行 - 演示错误状态 -->
+                <div class="bank-card error">
+                    <div class="bank-header">
+                        <div class="bank-name">交通银行</div>
+                        <div class="bank-status">
+                            <div class="status-indicator error"></div>
+                            <span>数据异常</span>
+                        </div>
+                    </div>
+                    <div class="error-message-card">
+                        错误信息: 网络连接超时，正在重试...
+                    </div>
+                </div>
+
+                <!-- 兴业银行 -->
+                <div class="bank-card">
+                    <div class="bank-header">
+                        <div class="bank-name">兴业银行</div>
+                        <div class="bank-status">
+                            <div class="status-indicator"></div>
+                            <span>数据正常</span>
+                        </div>
+                    </div>
+                    <div class="bank-body">
+                        <table class="rates-table">
+                            <thead>
+                                <tr>
+                                    <th>货币</th>
+                                    <th>买入价</th>
+                                    <th>卖出价</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="currency-name">美元</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">USD</div>
+                                    </td>
+                                    <td><span class="rate-value buy">7.2365</span></td>
+                                    <td><span class="rate-value sell">7.2585</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="currency-name">欧元</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">EUR</div>
+                                    </td>
+                                    <td><span class="rate-value buy">7.8450</span></td>
+                                    <td><span class="rate-value sell">7.8895</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-text">
+                    🎯 这是演示页面，展示汇率监控界面的设计效果 | 
+                    💡 实际部署后将显示真实的银行汇率数据 | 
+                    🚀 技术支持：Cloudflare Workers
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // 演示倒计时
+        let countdown = 225; // 3:45
+        setInterval(() => {
+            const minutes = Math.floor(countdown / 60);
+            const seconds = countdown % 60;
+            document.getElementById('demoCountdown').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            countdown--;
+            if (countdown < 0) countdown = 240; // 重置为4分钟
+        }, 1000);
+
+        // 刷新演示
+        function showRefreshDemo() {
+            const btn = document.querySelector('.refresh-btn');
+            btn.classList.add('loading');
+            setTimeout(() => {
+                btn.classList.remove('loading');
+                alert('🎉 演示刷新完成！\n\n在实际应用中，这里会从API获取最新的汇率数据。');
+            }, 2000);
+        }
+
+        // 货币筛选演示
+        function filterCurrency() {
+            const select = document.getElementById('currencySelect');
+            const value = select.value;
+            
+            if (value === 'all') {
+                alert('💡 显示所有银行的全部货币汇率');
+            } else {
+                alert(`💱 筛选显示 ${value} 货币的汇率\n\n在实际应用中，只会显示支持该货币的银行卡片。`);
+            }
+        }
+
+        // 添加渐入动画
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.container').classList.add('fade-in');
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实时汇率监控</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部标题 -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">
+                    <span class="icon">💱</span>
+                    实时汇率监控
+                </h1>
+                <div class="subtitle">8家银行汇率数据实时更新</div>
+            </div>
+            <div class="header-info">
+                <div class="update-info">
+                    <span class="update-label">最后更新：</span>
+                    <span class="update-time" id="lastUpdate">加载中...</span>
+                </div>
+                <button class="refresh-btn" id="refreshBtn">
+                    <span class="refresh-icon">🔄</span>
+                    刷新
+                </button>
+            </div>
+        </header>
+
+        <!-- 统计信息 -->
+        <div class="stats-section" id="statsSection" style="display: none;">
+            <div class="stat-card">
+                <div class="stat-value" id="totalBanks">0</div>
+                <div class="stat-label">支持银行</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="successfulBanks">0</div>
+                <div class="stat-label">成功采集</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="successRate">0%</div>
+                <div class="stat-label">成功率</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="nextUpdate">--</div>
+                <div class="stat-label">下次更新</div>
+            </div>
+        </div>
+
+        <!-- 加载状态 -->
+        <div class="loading-section" id="loadingSection">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">正在获取汇率数据...</div>
+        </div>
+
+        <!-- 错误状态 -->
+        <div class="error-section" id="errorSection" style="display: none;">
+            <div class="error-icon">⚠️</div>
+            <div class="error-title">数据获取失败</div>
+            <div class="error-message" id="errorMessage"></div>
+            <button class="retry-btn" id="retryBtn">重试</button>
+        </div>
+
+        <!-- 汇率数据展示 -->
+        <div class="rates-section" id="ratesSection" style="display: none;">
+            <!-- 货币筛选 -->
+            <div class="currency-filter">
+                <label for="currencySelect">选择货币：</label>
+                <select id="currencySelect" class="currency-select">
+                    <option value="all">全部货币</option>
+                </select>
+            </div>
+
+            <!-- 银行汇率卡片 -->
+            <div class="banks-grid" id="banksGrid">
+                <!-- 银行卡片将通过JavaScript动态生成 -->
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-text">
+                    数据来源：8家银行官方API接口 | 
+                    更新频率：每4分钟 | 
+                    技术支持：Cloudflare Workers
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 汇率详情模态框 -->
+    <div class="modal" id="rateModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle"></h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="rate-details" id="rateDetails">
+                    <!-- 详细汇率信息将通过JavaScript填充 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 

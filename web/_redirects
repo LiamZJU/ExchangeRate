@@ -1,0 +1,14 @@
+# Cloudflare Pages 重定向配置
+# 用于SPA应用的路由处理
+
+# 默认页面重定向
+/  /index.html  200
+
+# 演示页面
+/demo  /demo.html  200
+
+# API代理（如果需要）
+/api/*  https://exchange-rate-worker.YOUR_SUBDOMAIN.workers.dev/:splat  200
+
+# 404页面
+/*  /index.html  404 
